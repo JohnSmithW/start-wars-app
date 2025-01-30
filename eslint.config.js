@@ -8,7 +8,7 @@ import prettierPlugin from 'eslint-plugin-prettier';
 
 export default [
   {
-    files: ['**/*.{ts,tsx}'], // Specify the files to lint
+    files: ['**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,
       sourceType: 'module',
@@ -39,11 +39,13 @@ export default [
       ...reactHooks.configs.recommended.rules,
       ...tsEslintPlugin.configs.recommended.rules,
       'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
+      // 'react/prop-types': ['error', { ignore: ['info', 'handleHover'] }],
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
       ],
-      'prettier/prettier': 'error', // Ensures that Prettier rules are applied
+      'prettier/prettier': 'error',
     },
   },
 ];

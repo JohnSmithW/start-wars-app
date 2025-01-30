@@ -10,5 +10,5 @@
     "prettier-plugin-merge"
   ],
   "customFunctions": ["cva", "cn"],
-   "endingPosition": "absolute-with-indent"
+  "endingPosition": "absolute-with-indent"
 }
