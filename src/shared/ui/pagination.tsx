@@ -6,13 +6,14 @@ import {
 } from '@heroicons/react/24/solid';
 
 import { clsx } from 'clsx';
-import { ButtonProps, buttonVariants } from './button';
+import { ButtonProps } from './button';
+import { buttonVariants } from './button-variants';
 
 const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
   <nav
     role="navigation"
     aria-label="pagination"
-    className={clsx('mx-auto flex w-full justify-center', className)}
+    className={clsx('flex justify-center', className)}
     {...props}
   />
 );
@@ -52,6 +53,7 @@ const PaginationLink = ({
   <a
     aria-current={isActive ? 'page' : undefined}
     className={clsx(
+      'bg-secondary hover:bg-primary text-base hover:border',
       buttonVariants({
         variant: isActive ? 'outline' : 'ghost',
         size,
@@ -69,7 +71,10 @@ const PaginationPrevious = ({
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     aria-label="Go to previous page"
-    className={clsx('gap-1 pl-2.5', className)}
+    className={clsx(
+      'bg-secondary w-fit gap-1 px-2.5 text-base hover:border',
+      className
+    )}
     {...props}
   >
     <ChevronLeftIcon className="h-4 w-4" />
@@ -84,7 +89,10 @@ const PaginationNext = ({
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     aria-label="Go to next page"
-    className={clsx('gap-1 pr-2.5', className)}
+    className={clsx(
+      'bg-secondary w-fit gap-1 px-2.5 text-base hover:border',
+      className
+    )}
     {...props}
   >
     <span>Next</span>

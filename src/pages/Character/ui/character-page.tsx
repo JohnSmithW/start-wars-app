@@ -1,0 +1,23 @@
+import { Header } from '@/widgets/header';
+import { Toast } from '@/shared/ui/toast';
+import { useParams } from 'react-router-dom';
+import { CharacterForm } from './character-form';
+
+const CharacterPage = () => {
+  const { characterName } = useParams();
+
+  return (
+    <div className="bg-primary h-[100vh] w-full overflow-y-scroll">
+      <Header />
+      <div className="flex flex-col items-center p-[20px]">
+        <h1 className="text-accent pb-10 text-center text-4xl font-bold">
+          {characterName}
+        </h1>
+        <CharacterForm name={characterName || ''} />
+      </div>
+      <Toast.Viewport className="fixed right-2 bottom-2" />
+    </div>
+  );
+};
+
+export { CharacterPage };

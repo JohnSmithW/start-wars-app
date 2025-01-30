@@ -3,8 +3,10 @@ import type { Character } from './types';
 export const getCharacters = (
   page: number,
   searchParam?: string
-): Promise<Character[]> => {
+): Promise<{ result: Character[]; count: number }> => {
   return axiosInstance
     .get(`/people/?page=${page}${searchParam ? `&search=${searchParam}` : ''}`)
-    .then((data) => data.data.results);
+    .then((data) => {
+      return { result: data.data.results, count: data.data.count };
+    });
 };
