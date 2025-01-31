@@ -9,7 +9,6 @@ export const useGetCharacter = () => {
       axiosInstance.get(`/people/${id}`).then((data) => console.log(data)),
 
     onSuccess: (newCharacter) => {
-      console.log(newCharacter);
       queryClient.setQueryData(['character'], newCharacter);
     },
   });

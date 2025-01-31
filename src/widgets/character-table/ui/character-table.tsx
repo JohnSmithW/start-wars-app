@@ -60,10 +60,9 @@ export const CharacterTable = () => {
           const existingItem = existingMap.get(item.url);
           const editedItem =
             state.editedList instanceof Map && typeof item.url === 'string'
-              ? state.editedList.get(item.url) // Only access `get` if `editedList` is a Map
+              ? state.editedList.get(item.url)
               : null;
 
-          // Use the edited item if it exists, otherwise fallback to the API data
           return editedItem
             ? { ...item, ...editedItem }
             : { ...item, ...existingItem };
@@ -131,7 +130,8 @@ export const CharacterTable = () => {
       header: () => 'Skin Color',
       cell: (info) => (
         <div className="flex items-center gap-1">
-          {info.getValue()} <ColorCircle color={info.getValue() || ''} />
+          {info.getValue()}{' '}
+          <ColorCircle color={info.getValue() || ''} size="sm" />
         </div>
       ),
       enableSorting: false,
@@ -140,7 +140,8 @@ export const CharacterTable = () => {
       header: () => 'Eye Color',
       cell: (info) => (
         <div className="flex items-center gap-1">
-          {info.getValue()} <ColorCircle color={info.getValue() || ''} />
+          {info.getValue()}{' '}
+          <ColorCircle color={info.getValue() || ''} size="sm" />
         </div>
       ),
       enableSorting: false,
@@ -149,7 +150,8 @@ export const CharacterTable = () => {
       header: () => 'Hair Color',
       cell: (info) => (
         <div className="flex items-center gap-1">
-          {info.getValue()} <ColorCircle color={info.getValue() || ''} />
+          {info.getValue()}{' '}
+          <ColorCircle color={info.getValue() || ''} size="sm" />
         </div>
       ),
       enableSorting: false,

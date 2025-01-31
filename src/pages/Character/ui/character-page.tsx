@@ -8,13 +8,10 @@ import { useEffect, useState } from 'react';
 const CharacterPage = () => {
   const { url } = useParams();
 
-  console.log(url);
-
   const [characterName, setCharacterName] = useState('');
   const { list } = useCharacterStore((state) => state);
   useEffect(() => {
     if (list.length) {
-      console.log(list);
       const newCharacter = list.find((item) => item.url === url);
       setCharacterName(newCharacter?.name || '');
     }

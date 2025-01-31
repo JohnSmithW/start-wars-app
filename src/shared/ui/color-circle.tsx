@@ -8,7 +8,7 @@ interface IColorCircleProps {
 
 export const ColorCircle: React.FC<IColorCircleProps> = ({
   color,
-  size = '4',
+  size = 'md',
 }) => {
   const [hexColor, setHexColor] = useState<string | null>(null);
 
@@ -28,7 +28,7 @@ export const ColorCircle: React.FC<IColorCircleProps> = ({
         backgroundColor: hexColor,
       }}
       className={`border-light-grey rounded-full border-1
-        size-${size ? size : '4'}`}
+        ${size === 'sm' ? 'size-3' : 'size-4'}`}
     ></div>
   );
 };
