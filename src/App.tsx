@@ -15,10 +15,7 @@ function App() {
           <Router>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route
-                path="/characters/:characterName"
-                element={<CharacterPage />}
-              />
+              <Route path="/characters/:url" element={<CharacterPage />} />
             </Routes>
           </Router>
         </Toast.Provider>

@@ -1,17 +1,34 @@
+import { useEffect, useState } from 'react';
+import { getHexColor } from '../lib/getHexColor';
+
 interface IColorCircleProps {
   color: string;
+  size?: string;
 }
 
-const getColor = (color: string) => {
-  const colorArray = color.split(',');
+export const ColorCircle: React.FC<IColorCircleProps> = ({
+  color,
+  size = '4',
+}) => {
+  const [hexColor, setHexColor] = useState<string | null>(null);
 
-  if (colorArray[0]) {
-    if (colorArray[0] === 'fair') {
-      return '#f2e4b4';
-    }
-    return colorArray[0];
+  useEffect(() => {
+    setHexColor(getHexColor(color));
+  }, [color]);
+
+  if (!hexColor) {
+    return null;
   }
-};
-export const ColorCircle: React.FC<IColorCircleProps> = ({ color }) => {
-  return <div className={`bg-[${getColor(color)}] h-2 w-2 rounded-full`}></div>;
+
+  if (color === 'n/a') return null;
+
+  return (
+    <div
+      style={{
+        backgroundColor: hexColor,
+      }}
+      className={`border-light-grey rounded-full border-1
+        size-${size ? size : '4'}`}
+    ></div>
+  );
 };

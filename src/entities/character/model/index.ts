@@ -1,1 +1,1 @@
-export { useCharacterStore } from './stores/character-store';
+export { useCharacterStore } from './stores';

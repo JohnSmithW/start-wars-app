@@ -8,6 +8,8 @@
   --color-tertiary: #fff;
   --color-pale: oklch(0.34 0.01 0);
   --color-fair: oklch(0.985 0.001 106.423);
+  --color-light-grey: oklch(0.69 0.01 0);
+  --color-muted: hsl(215.4 16.3% 46.9%);
 }
 
 @layer base {
@@ -19,5 +21,7 @@
     --color-tertiary: #272b36;
     --color-pale: oklch(0.89 0 0);
     --color-fair: oklch(0.89 0 0);
+    --color-light-grey: oklch(0.89 0 0);
+    --color-muted: hsl(215.4deg 17.18% 61.37%);
   }
 }
