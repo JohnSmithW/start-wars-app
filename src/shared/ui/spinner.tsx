@@ -8,7 +8,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
   color = 'border-t-accent',
 }) => {
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center" data-testid="spinner">
       <div
         className={`${size} border-secondary border-4 border-t-4 ${color}
           animate-spin rounded-full`}

@@ -1,4 +1,4 @@
-import { keepPreviousData, queryOptions } from '@tanstack/react-query';
+import { queryOptions } from '@tanstack/react-query';
 import { getCharacters } from './get-characters';
 
 export const characterQueries = {
@@ -11,6 +11,6 @@ export const characterQueries = {
     queryOptions({
       queryKey: [...characterQueries.lists(), page, searchParam],
       queryFn: () => getCharacters(page, searchParam),
-      placeholderData: keepPreviousData,
+      // placeholderData: keepPreviousData,
     }),
 };

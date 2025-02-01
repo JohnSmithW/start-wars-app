@@ -34,6 +34,22 @@ import { ViewSwitcher } from './view-switcher';
 import { List } from '../../../shared/ui/list';
 import { CharacterCard } from './character-card';
 
+/**
+ * The CharacterTable component is a table that displays a list of characters.
+ * The component supports sorting, searching, and pagination.
+ * The component also supports changing the view from table to list.
+ * The component fetches the list of characters from the API and stores it in the
+ * character list store.
+ * The component also updates the character list store when the user searches for
+ * characters.
+ * The component renders a table with the character list, or a list of character cards,
+ * depending on the view chosen by the user.
+ * The component also renders a search bar, a view switcher, and a pagination component.
+ * The component handles the search, view change, and pagination events.
+ * The component renders a loading spinner while the data is being fetched.
+ * The component renders an error message if the API returns an error.
+ * @returns {JSX.Element} The rendered component.
+ */
 export const CharacterTable = () => {
   const navigate = useNavigate();
   const [sorting, setSorting] = useState<SortingState>([
@@ -53,6 +69,11 @@ export const CharacterTable = () => {
   const { list } = useCharacterStore((state) => state);
 
   useEffect(() => {
+    /**
+     * Update the character list store with the data from the API
+     * @param {Character[]} data.result - The list of characters from the API
+     * @returns {void}
+     */
     if (data?.result) {
       useCharacterStore.setState((state) => {
         const existingMap = new Map(state.list.map((char) => [char.url, char]));
@@ -73,18 +94,34 @@ export const CharacterTable = () => {
     }
   }, [data?.result]);
 
+  /**
+   * Decreases the current page number by one, if the current page
+   * is greater than the first page.
+   * @returns {void}
+   */
+
   const handlePrev = () => {
     if (page > 1) {
       setPage((prev) => prev - 1);
     }
   };
 
+  /**
+   * Updates the page state to the next page, if the current page is
+   * not the last page.
+   * @returns {void}
+   */
   const handleNext = () => {
     const pages = data ? Math.ceil(data.count / 10) : 1;
     if (page < pages) {
       setPage((prev) => prev + 1);
     }
   };
+  /**
+   * Updates the page state to the chosen page.
+   * @param {number} chosenPage - The page number to switch to.
+   * @returns {void}
+   */
   const handlePage = (chosenPage: number) => {
     setPage(chosenPage);
   };
@@ -158,11 +195,20 @@ export const CharacterTable = () => {
     }),
   ];
 
+  /**
+   * Updates the search query with the user's input
+   * @param {React.ChangeEvent<HTMLInputElement>} event - The input event
+   * @returns {void}
+   */
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event?.target;
     setSearch(value);
   };
 
+  /**
+   * Handles the view change event by toggling the view between table and list
+   * @returns {void}
+   */
   const handleViewChange = () => {
     setIsTable((prev) => !prev);
   };
@@ -177,14 +223,6 @@ export const CharacterTable = () => {
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
   });
-
-  if (isLoading) {
-    return (
-      <div className="flex h-[300px] w-full items-center justify-center">
-        <Spinner />
-      </div>
-    );
-  }
 
   if (isError || !list) {
     return <>{error?.message}</>;
@@ -205,7 +243,14 @@ export const CharacterTable = () => {
           handlePage={handlePage}
         />
       </div>
-      {isTable ? (
+      {isLoading ? (
+        <div
+          className="bg-tertiary flex h-[300px] w-full items-center
+            justify-center"
+        >
+          <Spinner />
+        </div>
+      ) : isTable ? (
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

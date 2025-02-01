@@ -15,8 +15,9 @@ export const CharacterCard: React.FC<ICharacterCardProps> = ({
 }) => {
   return (
     <div
-      className="bg-tertiary flex cursor-pointer flex-col gap-4 rounded-xl p-5
-        shadow-md"
+      className="bg-tertiary hover:border-muted flex cursor-pointer flex-col
+        gap-4 rounded-xl border border-transparent p-5 shadow-md
+        transition-shadow hover:shadow-lg"
       onClick={handleClick}
     >
       <div className="flex items-center justify-between">

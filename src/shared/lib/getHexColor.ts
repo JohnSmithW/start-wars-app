@@ -1,3 +1,28 @@
+/**
+ * Takes a string of colors and returns a hex color code.
+ *
+ * If the input contains multiple colors, the RGB values of the colors are
+ * averaged to create a blended color. If no colors are found, the function
+ * returns '#000000'.
+ *
+ * The following colors are supported:
+ *
+ * - blond: #FAF0BE
+ * - fair: #F5CBA7
+ * - blue: #0000FF
+ * - blue-gray: #6699CC
+ * - gold: #FFD700
+ * - yellow: #FFFF00
+ * - white: #FFFFFF
+ * - red: #FF0000
+ * - brown: #8B4513
+ * - black: #000000
+ * - light: #D3D3D3
+ * - grey: #808080
+ *
+ * @param {string} color The string of colors to convert.
+ * @returns {string} The hex color code.
+ */
 export function getHexColor(color: string): string {
   // Mapping of color names to their RGB values
   const colorMap: { [key: string]: string } = {

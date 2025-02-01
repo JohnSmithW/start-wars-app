@@ -10,8 +10,8 @@ export const CharacterTableSearch: React.FC<ICharacterTableSearchProps> = ({
       <input
         type="text"
         placeholder="Search"
-        className="w-full border-none bg-transparent px-4 py-1.5 text-base
-          -outline-offset-1 transition-all outline-none placeholder:text-base"
+        className="placeholder:text-muted w-full border-none bg-transparent px-4
+          py-1.5 text-base -outline-offset-1 transition-all outline-none"
         onChange={handleChange}
       />
     </div>
