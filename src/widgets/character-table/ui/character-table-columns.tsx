@@ -28,7 +28,13 @@ export const characterColumns = [
         Mass <WeightIcon />
       </div>
     ),
-    cell: (info) => <div>{info.getValue()} kg</div>,
+    cell: (info) => (
+      <div>
+        {info.getValue() !== 'unknown'
+          ? `${info.getValue()} kg`
+          : info.getValue()}
+      </div>
+    ),
     enableSorting: true,
   }),
   columnHelper.accessor('gender', {
@@ -48,8 +54,14 @@ export const characterColumns = [
     header: 'Skin Color',
     cell: (info) => (
       <div className="flex items-center gap-1">
-        {info.getValue()}{' '}
-        <ColorCircle color={info.getValue() || ''} size="sm" />
+        {info.getValue() !== 'unknown' ? (
+          <>
+            {info.getValue()}{' '}
+            <ColorCircle color={info.getValue() || ''} size="sm" />
+          </>
+        ) : (
+          info.getValue()
+        )}
       </div>
     ),
     enableSorting: false,
