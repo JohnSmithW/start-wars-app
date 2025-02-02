@@ -1,16 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Character,
-  CharacterAPI,
-  useCharacterStore,
-} from '@/entities/character';
-import { useQuery } from '@tanstack/react-query';
 import {
   useReactTable,
   getCoreRowModel,
   flexRender,
-  createColumnHelper,
   SortingState,
   getSortedRowModel,
 } from '@tanstack/react-table';
@@ -23,16 +16,16 @@ import {
   TableBody,
   TableCell,
 } from '@/shared/ui/table';
-import { HeightIcon } from '@/shared/ui/height-icon';
-import { WeightIcon } from '@/shared/ui/weight-icon';
-import { GenderIcon } from '@/shared/ui/gender-icon';
-import { ColorCircle } from '@/shared/ui/color-circle';
+
 import { CharacterTableSearch } from './character-table-search';
 import { CharacterTablePagination } from './character-table-pagination';
 import Spinner from '@/shared/ui/spinner';
 import { ViewSwitcher } from './view-switcher';
 import { List } from '../../../shared/ui/list';
 import { CharacterCard } from './character-card';
+import { useCharacters } from '../lib/hooks/useCharacters';
+import { characterColumns } from './character-table-columns';
+import { CharacterTableNoResults } from './character-table-no-results';
 
 /**
  * The CharacterTable component is a table that displays a list of characters.
@@ -61,38 +54,8 @@ export const CharacterTable = () => {
   const [search, setSearch] = useState<string>('');
   const [page, setPage] = useState<number>(1);
   const [isTable, setIsTable] = useState<boolean>(true);
-  const columnHelper = createColumnHelper<Character>();
-  const { data, error, isLoading, isError } = useQuery(
-    CharacterAPI.characterQueries.list(page, search)
-  );
-
-  const { list } = useCharacterStore((state) => state);
-
-  useEffect(() => {
-    /**
-     * Update the character list store with the data from the API
-     * @param {Character[]} data.result - The list of characters from the API
-     * @returns {void}
-     */
-    if (data?.result) {
-      useCharacterStore.setState((state) => {
-        const existingMap = new Map(state.list.map((char) => [char.url, char]));
-        const updatedList = data.result.map((item) => {
-          const existingItem = existingMap.get(item.url);
-          const editedItem =
-            state.editedList instanceof Map && typeof item.url === 'string'
-              ? state.editedList.get(item.url)
-              : null;
-
-          return editedItem
-            ? { ...item, ...editedItem }
-            : { ...item, ...existingItem };
-        });
-
-        return { list: updatedList };
-      });
-    }
-  }, [data?.result]);
+  const { list, data, error, isLoading, isError } = useCharacters(page, search);
+  const columns = useMemo(() => characterColumns, []);
 
   /**
    * Decreases the current page number by one, if the current page
@@ -100,110 +63,45 @@ export const CharacterTable = () => {
    * @returns {void}
    */
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     if (page > 1) {
       setPage((prev) => prev - 1);
     }
-  };
+  }, [page]);
 
   /**
    * Updates the page state to the next page, if the current page is
    * not the last page.
    * @returns {void}
    */
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     const pages = data ? Math.ceil(data.count / 10) : 1;
     if (page < pages) {
       setPage((prev) => prev + 1);
     }
-  };
+  }, [data, page]);
   /**
    * Updates the page state to the chosen page.
    * @param {number} chosenPage - The page number to switch to.
    * @returns {void}
    */
-  const handlePage = (chosenPage: number) => {
+  const handlePage = useCallback((chosenPage: number) => {
     setPage(chosenPage);
-  };
-
-  const columns = [
-    columnHelper.accessor('name', {
-      header: () => <div>Name</div>,
-      enableSorting: true,
-    }),
-    columnHelper.accessor('height', {
-      header: () => (
-        <div className="flex items-center gap-1.5">
-          Height <HeightIcon />
-        </div>
-      ),
-      cell: (info) => <div>{info.getValue()} cm</div>,
-      enableSorting: true,
-    }),
-    columnHelper.accessor('mass', {
-      header: () => (
-        <div className="flex items-center gap-1.5">
-          Mass <WeightIcon />
-        </div>
-      ),
-      cell: (info) => <div>{info.getValue()} kg</div>,
-      enableSorting: true,
-    }),
-
-    columnHelper.accessor('gender', {
-      header: () => <div className="flex items-center">Gender</div>,
-      cell: (info) => (
-        <div className="flex items-center">
-          {info.getValue() === 'male' || info.getValue() === 'female' ? (
-            <GenderIcon gender={info.getValue() || null} fill="fill-base" />
-          ) : (
-            info.getValue()
-          )}
-        </div>
-      ),
-      enableSorting: false,
-    }),
-    columnHelper.accessor('skin_color', {
-      header: () => 'Skin Color',
-      cell: (info) => (
-        <div className="flex items-center gap-1">
-          {info.getValue()}{' '}
-          <ColorCircle color={info.getValue() || ''} size="sm" />
-        </div>
-      ),
-      enableSorting: false,
-    }),
-    columnHelper.accessor('eye_color', {
-      header: () => 'Eye Color',
-      cell: (info) => (
-        <div className="flex items-center gap-1">
-          {info.getValue()}{' '}
-          <ColorCircle color={info.getValue() || ''} size="sm" />
-        </div>
-      ),
-      enableSorting: false,
-    }),
-    columnHelper.accessor('hair_color', {
-      header: () => 'Hair Color',
-      cell: (info) => (
-        <div className="flex items-center gap-1">
-          {info.getValue()}{' '}
-          <ColorCircle color={info.getValue() || ''} size="sm" />
-        </div>
-      ),
-      enableSorting: false,
-    }),
-  ];
+  }, []);
 
   /**
    * Updates the search query with the user's input
    * @param {React.ChangeEvent<HTMLInputElement>} event - The input event
    * @returns {void}
    */
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event?.target;
-    setSearch(value);
-  };
+  const handleSearch = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = event?.target;
+      setPage(1);
+      setSearch(value);
+    },
+    []
+  );
 
   /**
    * Handles the view change event by toggling the view between table and list
@@ -250,7 +148,7 @@ export const CharacterTable = () => {
         >
           <Spinner />
         </div>
-      ) : isTable ? (
+      ) : isTable && list.length ? (
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -303,6 +201,8 @@ export const CharacterTable = () => {
           ))}
         </List>
       )}
+
+      {!isLoading && !list.length && <CharacterTableNoResults />}
     </div>
   );
 };

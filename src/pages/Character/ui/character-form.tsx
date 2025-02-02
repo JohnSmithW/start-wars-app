@@ -59,7 +59,7 @@ export const CharacterForm = ({ url }: { url: string }) => {
               disabled:pointer-events-none disabled:opacity-50
               disabled:shadow-none"
           >
-            <a>Go back</a>
+            Go back
           </Link>
         </div>
         <div className="grid grid-cols-6 gap-5">
@@ -104,12 +104,13 @@ export const CharacterForm = ({ url }: { url: string }) => {
             e.stopPropagation();
           }}
           className="flex justify-end"
+          asChild
         >
           <button
             type="button"
-            className="bg-tertiary hover:bg-secondary ml-2 cursor-pointer
-              rounded-md border border-transparent px-4 py-2 text-center
-              text-base text-sm shadow-md transition-all
+            className="bg-tertiary hover:bg-secondary ml-2 w-fit cursor-pointer
+              self-end rounded-md border border-transparent px-4 py-2
+              text-center text-base text-sm shadow-md transition-all
               disabled:pointer-events-none disabled:opacity-50
               disabled:shadow-none"
             onClick={handleSave}
