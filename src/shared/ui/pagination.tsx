@@ -72,7 +72,8 @@ const PaginationPrevious = ({
   <PaginationLink
     aria-label="Go to previous page"
     className={clsx(
-      'bg-secondary w-fit gap-1 px-2.5 text-base hover:border',
+      `bg-secondary hover:border-muted w-fit gap-1 border border-transparent
+      px-2.5 text-base`,
       className
     )}
     {...props}
@@ -90,7 +91,8 @@ const PaginationNext = ({
   <PaginationLink
     aria-label="Go to next page"
     className={clsx(
-      'bg-secondary w-fit gap-1 px-2.5 text-base hover:border',
+      `bg-secondary hover:border-muted w-fit gap-1 border border-transparent
+      px-2.5 text-base`,
       className
     )}
     {...props}

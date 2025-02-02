@@ -1,7 +1,7 @@
 import { Form } from '@/shared/ui/form';
 import { Toast } from '@/shared/ui/toast';
 import { useCharacterStore } from '@/entities/character/model';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Character } from '@/entities/character';
 import { Link } from 'react-router-dom';
 
@@ -16,33 +16,41 @@ export const CharacterForm = ({ url }: { url: string }) => {
       const newCharacter = list.find((item) => item.url === url);
       setCharacter({ ...newCharacter });
     }
-  }, [list, url, character?.url]);
+  }, [list, url]);
 
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    key: string
-  ) => {
-    setCharacter((prevCharacter) => ({
-      ...prevCharacter,
-      [key]: event.target.value,
-    }));
-  };
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
 
-  const handleSave = (event: React.SyntheticEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>, key: string) => {
+      setCharacter((prevCharacter) => ({
+        ...prevCharacter,
+        [key]: event.target.value,
+      }));
+    },
+    [setCharacter]
+  );
 
-    if (character) {
-      console.log(character);
-      useCharacterStore.getState().setEditedList(character);
-    }
+  const handleSave = useCallback(
+    (event: React.SyntheticEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
 
-    setOpen(true);
-    window.clearTimeout(timerRef.current);
-    timerRef.current = window.setTimeout(() => {
-      setOpen(false);
-    }, 3000);
-  };
+      if (character) {
+        useCharacterStore.getState().setEditedList(character);
+      }
+
+      setOpen(true);
+      window.clearTimeout(timerRef.current);
+      timerRef.current = window.setTimeout(() => {
+        setOpen(false);
+      }, 3000);
+    },
+    [character]
+  );
   return (
     <>
       <Form.Root

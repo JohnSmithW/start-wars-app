@@ -11,6 +11,5 @@ export const characterQueries = {
     queryOptions({
       queryKey: [...characterQueries.lists(), page, searchParam],
       queryFn: () => getCharacters(page, searchParam),
-      // placeholderData: keepPreviousData,
     }),
 };
