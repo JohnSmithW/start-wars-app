@@ -161,7 +161,7 @@ export const CharacterTable = () => {
           )}
         </div>
       ),
-      enableSorting: true,
+      enableSorting: false,
     }),
     columnHelper.accessor('skin_color', {
       header: () => 'Skin Color',
