@@ -4,10 +4,9 @@ import { useTheme } from '@/shared/context';
 
 export const ThemeToggle = () => {
   const { theme, toggleTheme } = useTheme();
-  const { play } = useSound(
-    `${import.meta.env.VITE_BASE_URL}/sounds/click.mp3`,
-    { volume: 0.5 }
-  );
+  const { play } = useSound(`${import.meta.env.BASE_URL}sounds/click.mp3`, {
+    volume: 0.5,
+  });
 
   return (
     <ThemeToggleLightsaber

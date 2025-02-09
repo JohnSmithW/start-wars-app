@@ -12,7 +12,7 @@ function App() {
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
         <Toast.Provider>
-          <Router>
+          <Router basename={import.meta.env.VITE_BASE_URL || '/'}>
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/characters/:url" element={<CharacterPage />} />
